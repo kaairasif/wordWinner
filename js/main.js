@@ -1,4 +1,4 @@
-window.addEventListener("load", init)
+// window.addEventListener("load", init)
 
 // Globals
 
@@ -10,7 +10,7 @@ const levels = {
 }
 
 // To change level 
-const currentLevel = levels.easy;
+let currentLevel = levels.easy;
 
 let time = currentLevel;
 let score = 0;
@@ -24,11 +24,36 @@ const timeDisplay = document.querySelector('#time');
 const message = document.querySelector('#message');
 const seconds = document.querySelector('#seconds');
 const highscoreDisplay = document.querySelector('#highscore');
-// const start = document.querySelector('#start');
+const gameLevel = document.querySelector('#game-level');
+const start = document.querySelector("#start");
 
 
-const takeScreenshot = document.querySelector('#take-screenshot')
-const takeScreenshot2 = document.querySelector('#take-screenshot-2')
+// Start the game
+start.addEventListener("click", () => {
+  init();
+})
+
+// Select the game levels
+let dropdown = document.querySelector('#game-level');
+if (dropdown) {
+  dropdown.addEventListener('change', function(event) {
+    wordInput.value = '';
+    if(parseInt(event.target.value) === 1) {
+      currentLevel = levels.easy;
+      init();
+    } else if(parseInt(event.target.value) === 2) {
+      currentLevel = levels.medium;
+      init();
+    }
+    else if(parseInt(event.target.value) === 3) {
+      currentLevel = levels.hard;
+      init();
+    }
+    message.innerHTML = '';
+    clearInterval(statusInterval)
+  })
+    
+};
 
 let words = [
   "test",
@@ -43,7 +68,7 @@ let words = [
 ]
 
 // Initialize game
-function init(){
+function init() {
   // Show number of seconds in UI
   seconds.innerHTML = currentLevel;
   // Load word from array
@@ -58,8 +83,6 @@ function init(){
   setInterval(countdown, 1000);
   // Check game status
   setInterval(checkStatus, 50);
-
- 
 }
 
 // start.addEventListener("click", init)
@@ -112,6 +135,7 @@ function countdown() {
 // Check game status
 function checkStatus() {
   if(!isPlaying && time == 0) {
+    console.log("Status");
     message.style.color = 'red';
     message.innerHTML = 'Game over!';
     score = 1;
@@ -131,22 +155,3 @@ function matchWords() {
 }
 
 
-
-
-
-// //////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Scrennshot test
-
-// takeScreenshot.addEventListener("click", () => {
-//   html2canvas(document.querySelector("#capture")).then(canvas => {
-//     document.body.prepend(canvas)
-//   });
-  
-// })
-
-// takeScreenshot2.addEventListener("click", () => {
-//   html2canvas(document.querySelector("#second-screenshot")).then(canvas => {
-//     document.body.prepend(canvas)
-//   });
-// })
-// //////////////////////////////////////////////////////////////////////////////////////////////////////////
